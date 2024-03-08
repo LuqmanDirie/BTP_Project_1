@@ -1,19 +1,51 @@
-version: '3.1'
+version: '3.8'
 
 services:
-  db:
-    image: mysql:latest
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: Myapipassword
-      MYSQL_DATABASE: RestfulApiDatabase
-    ports:
-      - "3306:3306"
-
-  api:
-    build: .
+  user_service:
+    build: ./user_service
     ports:
       - "8080:8080"
-    depends_on:
-      - db
+  
+  health_records_service:
+    build: ./health_records_service
+    ports:
+      - "8081:8080"
+
+  medications_service:
+    build: ./medications_service
+    ports:
+      - "8082:8080"
+  
+  allergies_service:
+    build: ./allergies_service
+    ports:
+      - "8083:8080"
+
+  immunizations_service:
+    build: ./immunizations_service
+    ports:
+      - "8084:8080"
+
+  doctor_visits_service:
+    build: ./doctor_visits_service
+    ports:
+      - "8085:8080"
+
+  test_results_service:
+    build: ./test_results_service
+    ports:
+      - "8086:8080"
+
+  newdb:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: PHRpassword
+      MYSQL_DATABASE: PHRApiDatabase
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
